@@ -1,0 +1,62 @@
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 font-sans">
+    <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-2xl space-y-6">
+        
+        <h1 class="text-3xl font-extrabold text-center text-indigo-700">Daftar Akun Baru</h1>
+        <p class="text-center text-gray-500">Isi detail di bawah untuk membuat akun baru.</p>
+        
+        <form [formGroup]="form" (ngSubmit)="register()" class="space-y-4">
+            
+            <div>
+                <label for="reg-username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                <input 
+                    id="reg-username" 
+                    type="text" 
+                    formControlName="username" 
+                    placeholder="Username" 
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150"
+                    [ngClass]="{'border-red-500': form.get('username')?.invalid && form.get('username')?.touched}"
+                />
+
+                <p *ngIf="form.get('username')?.invalid && form.get('username')?.touched" 
+                   class="text-red-500 text-sm mt-1">
+                    Username wajib diisi.
+                </p>
+            </div>
+
+            <div>
+                <label for="reg-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input 
+                    id="reg-email" 
+                    type="email" 
+                    formControlName="email" 
+                    placeholder="Email" 
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150"
+                    [ngClass]="{'border-red-500': form.get('email')?.invalid && form.get('email')?.touched}"
+                />
+                
+                <p *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched" 
+                   class="text-red-500 text-sm mt-1">
+                    Email wajib diisi.
+                </p>
+                <p *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched" 
+                   class="text-red-500 text-sm mt-1">
+                    Format email tidak valid.
+                </p>
+            </div>
+            
+            <button 
+                type="submit" 
+                [disabled]="form.invalid"
+                class="w-full py-2 rounded-lg font-semibold text-white transition duration-200 mt-6"
+                [ngClass]="form.invalid ? 'bg-indigo-300 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 shadow-md'"
+            >
+                Daftar Sekarang
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-600 pt-2">
+            Sudah punya akun? 
+            <a href="/auth/login" class="text-indigo-600 hover:underline font-medium">Login di sini</a>
+        </p>
+    </div>
+</div>
