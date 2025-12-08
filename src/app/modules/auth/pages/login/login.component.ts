@@ -20,12 +20,12 @@ export class LoginComponent {
 login(){
   console.log('Form submitted:', this.form.value);
   localStorage.setItem('token','dummy-token');
-  return this.router.navigate(['auth/userlist']);
+  return this.router.navigate(['/userlist']);
 }
 
 checkAuth(){
   if(localStorage.getItem('token')){
-    this.router.navigate(['auth/userlist']);
+    this.router.navigate(['/userlist']);
   }
 }
 }

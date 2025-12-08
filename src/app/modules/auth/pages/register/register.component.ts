@@ -13,8 +13,8 @@ constructor(private router: Router) {
  }
 
  form = new FormGroup({
-      username: new FormControl('', Validators.required),
       email: new FormControl('',[Validators.required, Validators.email]),
+      password: new FormControl('',[Validators.required, Validators.minLength(6)]),
     });
 
 register(){

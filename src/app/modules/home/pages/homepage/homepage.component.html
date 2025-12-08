@@ -1,31 +1,49 @@
 <div class="font-sans min-h-screen bg-gray-50">
 
-      <!-- Navbar -->
-      <nav class="bg-white shadow-lg sticky top-0 z-10">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div class="flex items-center justify-between h-16">
+      <main class="max-w-5xl mx-auto p-6 lg:p-10">
 
-                  <div class="flex-shrink-0">
-                      <span class="text-2xl font-extrabold text-indigo-600">APP CRUD</span>
-                  </div>
+          <header class="text-center mb-12 py-8 bg-white rounded-xl shadow-lg">
+              <h1 class="text-4xl font-bold text-gray-900 mb-3">Selamat Datang di Dashboard CRUD Pengguna</h1>
+              <p class="text-lg text-gray-600">Aplikasi ini mendemonstrasikan operasi dasar manajemen data pengguna.</p>
+          </header>
+
+          <div class="grid md:grid-cols-2 gap-8">
+              
+              <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-600">
+                  <h2 class="text-2xl font-semibold text-gray-800 mb-4">Apa itu CRUD User?</h2>
+                  <p class="text-gray-700 leading-relaxed">
+                      CRUD adalah singkatan dari Create, Read, Update, Delete, yang mewakili empat fungsi dasar yang diperlukan untuk mengelola data secara persisten dalam sebuah aplikasi. Dalam konteks manajemen pengguna, CRUD adalah inti dari bagaimana Anda menambahkan pengguna baru, melihat detail mereka, mengubah informasi mereka, dan menghapus akun mereka.
+                  </p>
+                  <p class="mt-4 text-sm text-gray-500">
+                      Ini adalah fundamental dari setiap sistem manajemen informasi.
+                  </p>
+              </div>
+
+              <div class="space-y-4">
                   
-                  <div class="flex space-x-4">
-                      <a href="/" 
-                         class="text-gray-600 hover:bg-gray-100 hover:text-indigo-600 px-3 py-2 rounded-lg text-sm font-medium transition duration-150">
-                          Home
-                      </a>
-                      <a href="/auth/login" 
-                         class="text-gray-600 hover:bg-gray-100 hover:hover:text-indigo-600 px-3 py-2 rounded-lg text-sm font-medium transition duration-150">
-                          Login
-                      </a>
-                      <a href="/auth/register" 
-                         class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-2 rounded-lg text-sm font-bold shadow-md transition duration-150">
-                          Regis User
-                      </a>
+                  <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-emerald-500">
+                      <h3 class="font-bold text-lg text-emerald-600 mb-1">C - Create (Membuat)</h3>
+                      <p class="text-gray-700 text-sm">Proses pendaftaran (Register) pengguna baru. Data dari form dikirim ke database untuk membuat record baru.</p>
                   </div>
+
+                  <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500">
+                      <h3 class="font-bold text-lg text-blue-600 mb-1">R - Read (Membaca)</h3>
+                      <p class="text-gray-700 text-sm">Proses menampilkan daftar semua pengguna atau melihat detail satu pengguna tertentu.</p>
+                  </div>
+
+                  <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-yellow-500">
+                      <h3 class="font-bold text-lg text-yellow-600 mb-1">U - Update (Memperbarui)</h3>
+                      <p class="text-gray-700 text-sm">Proses memodifikasi data yang sudah ada, seperti mengubah username atau alamat email penggunabol.</p>
+                  </div>
+
+                  <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-red-500">
+                      <h3 class="font-bold text-lg text-red-600 mb-1">D - Delete (Menghapus)</h3>
+                      <p class="text-gray-700 text-sm">Proses menghapus data pengguna secara permanen dari database.</p>
+                  </div>
+
               </div>
           </div>
-      </nav>
-      <!-- Navbar -->
+
+      </main>
       
     </div>

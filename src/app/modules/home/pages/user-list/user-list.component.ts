@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
   selector: 'app-user-list',
@@ -11,9 +11,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 export class UserListComponent {
 constructor(
   private router: Router, 
-  private authService: AuthService, ) 
-  {
-  }
+  private authService: AuthService, ) {}
 
   private updatedData = { username: 'updateduser', email: 'update@example.com' };
   users: any[] = [];
@@ -23,7 +21,6 @@ constructor(
       this.users = data;
     });
   }
-  
 
   postUser(formData:{ username: string; email: string }) {
     
@@ -45,21 +42,6 @@ constructor(
     });
   }
 
-  updateUser(id: number) {
-    this.authService.updateUser(id, this.updatedData).subscribe({
-      next: (response) => {
-        const index = this.users.findIndex(u => u.id === id);
-        if (index !== -1) {
-          this.users[index] = { ...this.users[index], ...this.updatedData };
-        }
-        console.log('Pengguna berhasil diperbarui:', response);
-      },
-      error: (err) => {
-        console.error('Gagal memperbarui pengguna:', err);
-      }
-    });
-  }
-
   deleteUser(id: number) {
     this.authService.deleteUser(id).subscribe({
       next: (response) => {
@@ -71,6 +53,11 @@ constructor(
       }
     });
   }
+
+  userDetail(id: number) {
+    this.router.navigate(['/userlist', id]);
+  }
+
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/auth/login']);

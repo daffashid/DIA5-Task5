@@ -17,12 +17,11 @@
                     <div class="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-4 mb-2 md:mb-0 w-full md:w-auto">
                         <span class="user-id text-xs font-mono text-gray-500 min-w-[50px]">ID: {{ u.id }}</span>
                         <span class="username-display font-semibold text-gray-800">{{ u.username }}</span>
-                        <span class="separator hidden md:inline text-gray-300">|</span>
-                        <span class="email-display text-sm text-indigo-600 truncate">{{ u.email | lowercase }}</span>
+                        <span class="email-display text-sm truncate">{{ u.email | lowercase }}</span>
                     </div>
 
                     <div class="flex space-x-3 mt-2 md:mt-0">
-                        <button (click)="updateUser(u.id)"
+                        <button (click)="userDetail(u.id)"
                                 class="px-3 py-1 text-sm rounded-lg font-medium text-white bg-blue-500 hover:bg-blue-600 transition duration-150 shadow-md">
                             Update User
                         </button> 
