@@ -1,6 +1,61 @@
-<div class="container mx-auto mt-20">
-    <a href="#" class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
-        <h5 class="mb-3 text-2xl font-semibold tracking-tight text-heading leading-8">Noteworthy technology acquisitions 2021</h5>
-        <p class="text-body">Here are the biggest technology acquisitions of 2025 so far, in reverse chronological order.</p>
-    </a>
+
+
+<div class="container mx-auto mt-10 max-w-4xl px-4 sm:px-6 lg:px-8">
+<button routerLink="/userlist">
+    ← Kembali ke daftar user
+  </button>
+
+<div *ngIf="users" class="users-detail-card bg-white rounded-2xl shadow-2xl border border-gray-100 p-8 space-y-8">
+
+    <div class="border-b border-indigo-100 pb-5">
+        <div class="mb-4 sm:mb-0">
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
+                {{ users.name.firstname }} {{ users.name.lastname }}
+            </h1>
+            <p class="text-md text-indigo-600 mt-1 font-medium">
+                {{ users.usersname }} <span class="text-gray-500">{{ users.email }}</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-base text-gray-700">
+        
+        <div class="space-y-3 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+            <h2 class="text-sm font-bold text-indigo-700 uppercase mb-2 tracking-wider">
+                Kontak & Identitas
+            </h2>
+            <p><span class="font-semibold text-gray-900 w-20 inline-block">ID:</span> {{ users.id }}</p>
+            <p><span class="font-semibold text-gray-900 w-20 inline-block">Email:</span> {{ users.email }}</p>
+            <p><span class="font-semibold text-gray-900 w-20 inline-block">Phone:</span> {{ users.phone }}</p>
+        </div>
+
+        <div class="address-info space-y-3 p-4 bg-white rounded-xl shadow-inner border border-gray-200">
+            <h2 class="text-sm font-bold text-indigo-700 uppercase mb-2 tracking-wider">
+                Alamat Tempat Tinggal
+            </h2>
+            <p>
+                <span class="font-semibold text-gray-900 w-20 inline-block">Jalan:</span> {{ users.address.street }}, No. {{ users.address.number }}
+            </p>
+            <p>
+                <span class="font-semibold text-gray-900 w-20 inline-block">Kota:</span> {{ users.address.city }}, {{ users.address.zipcode }}
+            </p>
+
+            <div class="mt-4 pt-2 border-t border-gray-100">
+                <span class="bg-gray-100 text-gray-600 text-xs font-semibold px-2.5 py-1 rounded-full">
+                    Lat: {{ users.address.geolocation.lat }}, Long:
+                    {{ users.address.geolocation.long }}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!users" class="text-center p-12 bg-white rounded-xl shadow-lg mt-10 border border-gray-200">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-indigo-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <p class="text-xl text-gray-600 font-medium mt-3">Memuat data pengguna...</p>
+</div>
+
+
 </div>

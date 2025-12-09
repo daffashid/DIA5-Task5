@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,10 @@ export class AuthService {
   getUser() {
     return this.http.get(this.env);
   }
+
+  getSingleUser(id: number): Observable<any> {
+    return this.http.get<any>(`${this.env}/${id}`);
+  }
 
   addUser(newUser: any) {
     return this.http.post(this.env, newUser);

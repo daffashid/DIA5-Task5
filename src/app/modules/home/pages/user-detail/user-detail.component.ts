@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
@@ -9,30 +9,45 @@ import { AuthService } from 'src/app/modules/auth/services/auth.service';
 })
 export class UserDetailComponent {
 constructor(
-  private router: Router, 
+  private router: ActivatedRoute, 
   private authService: AuthService, ) {}
 
   private updatedData = { username: 'updateduser', email: 'update@example.com' };
-  users: any[] = [];
+  users: any |null = null;
 
-  ngOnInit() {
-    this.authService.getUser().subscribe((data: any) => {
-      this.users = data;
-    });
+  ngOnInit(): void {
+    const idParam = this.router.snapshot.paramMap.get('id');
+    const id = idParam ? parseInt(idParam) : null;
+
+    if (!id) {
+      console.error("Id tidak ditemukan")
+      return;
+    }
+
+    this.getUser(id);
   }
 
-  updateUser(id: number) {
-    this.authService.updateUser(id, this.updatedData).subscribe({
-      next: (response) => {
-        const index = this.users.findIndex(u => u.id === id);
-        if (index !== -1) {
-          this.users[index] = { ...this.users[index], ...this.updatedData };
-        }
-        console.log('Pengguna berhasil diperbarui:', response);
+  private getUser(id: number): void {
+    this.authService.getSingleUser(id).subscribe({
+      next: (data: any[]) => {
+        this.users = data;
       },
-      error: (err) => {
-        console.error('Gagal memperbarui pengguna:', err);
-      }
     });
   }
+
+   
+  // updateUser(id: number) {
+  //   this.authService.updateUser(id, this.updatedData).subscribe({
+  //     next: (response) => {
+  //       const index = this.users.findIndex(u => u.id === id);
+  //       if (index !== -1) {
+  //         this.users[index] = { ...this.users[index], ...this.updatedData };
+  //       }
+  //       console.log('Pengguna berhasil diperbarui:', response);
+  //     },
+  //     error: (err) => {
+  //       console.error('Gagal memperbarui pengguna:', err);
+  //     }
+  //   });
+  // }
 }
