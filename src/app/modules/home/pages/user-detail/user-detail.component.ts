@@ -1,23 +1,34 @@
-import { Component } from '@angular/core';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'; 
 
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.css']
 })
-export class UserDetailComponent {
-constructor(
-  private router: ActivatedRoute, 
-  private authService: AuthService, ) {}
+export class UserDetailComponent implements OnInit { 
+  
+  userForm: FormGroup;
+  
+  isEditing: boolean = false; 
+  user: any | null = null; 
 
-  private updatedData = { username: 'updateduser', email: 'update@example.com' };
-  users: any |null = null;
+  constructor(
+    private router: ActivatedRoute, 
+    private authService: AuthService, 
+    private fb: FormBuilder 
+  ) {
+    this.userForm = this.fb.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]]
+    });
+  }
 
   ngOnInit(): void {
     const idParam = this.router.snapshot.paramMap.get('id');
-    const id = idParam ? parseInt(idParam) : null;
+    const id = idParam ? parseInt(idParam, 10) : null; 
 
     if (!id) {
       console.error("Id tidak ditemukan")
@@ -29,25 +40,45 @@ constructor(
 
   private getUser(id: number): void {
     this.authService.getSingleUser(id).subscribe({
-      next: (data: any[]) => {
-        this.users = data;
+      next: (data) => { 
+        this.user = data;
+        this.userForm.patchValue({
+          username: data.username,
+          email: data.email
+        });
       },
+      error: (err) => {
+        console.error('Gagal mengambil data pengguna:', err);
+        this.user = null;
+      }
     });
   }
 
-   
-  // updateUser(id: number) {
-  //   this.authService.updateUser(id, this.updatedData).subscribe({
-  //     next: (response) => {
-  //       const index = this.users.findIndex(u => u.id === id);
-  //       if (index !== -1) {
-  //         this.users[index] = { ...this.users[index], ...this.updatedData };
-  //       }
-  //       console.log('Pengguna berhasil diperbarui:', response);
-  //     },
-  //     error: (err) => {
-  //       console.error('Gagal memperbarui pengguna:', err);
-  //     }
-  //   });
-  // }
+  updateUser(id: number) {
+    if (this.userForm.invalid || !this.user) {
+        console.error("Form tidak valid atau data pengguna tidak tersedia.");
+        return;
+    }
+    
+    const updatedPayload = this.userForm.value;
+
+    this.authService.updateUser(id, updatedPayload).subscribe({
+      next: (response) => {
+        
+        if (this.user) {
+            this.user.username = updatedPayload.username;
+            this.user.email = updatedPayload.email;
+        }
+
+        this.isEditing = false; 
+        
+        console.log('Pengguna berhasil diperbarui:', response);
+        alert(`Data pengguna (ID: ${id}) berhasil diperbarui!`); 
+      },
+      error: (err) => {
+        console.error('Gagal memperbarui pengguna:', err);
+        alert('Gagal memperbarui pengguna. Cek konsol untuk detailnya.');
+      }
+    });
+  }
 }

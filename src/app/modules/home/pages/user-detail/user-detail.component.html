@@ -1,61 +1,122 @@
-
-
 <div class="container mx-auto mt-10 max-w-4xl px-4 sm:px-6 lg:px-8">
-<button routerLink="/userlist">
-    ← Kembali ke daftar user
-  </button>
 
-<div *ngIf="users" class="users-detail-card bg-white rounded-2xl shadow-2xl border border-gray-100 p-8 space-y-8">
+    <button routerLink="/userlist" class="flex items-center text-indigo-600 hover:text-indigo-800 transition duration-150 mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Kembali ke daftar user
+    </button>
 
-    <div class="border-b border-indigo-100 pb-5">
-        <div class="mb-4 sm:mb-0">
-            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
-                {{ users.name.firstname }} {{ users.name.lastname }}
-            </h1>
-            <p class="text-md text-indigo-600 mt-1 font-medium">
-                {{ users.usersname }} <span class="text-gray-500">{{ users.email }}</span>
-            </p>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-base text-gray-700">
+    <div *ngIf="user" class="user-detail-card bg-white rounded-2xl shadow-2xl border border-gray-100 p-8 space-y-8">
         
-        <div class="space-y-3 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
-            <h2 class="text-sm font-bold text-indigo-700 uppercase mb-2 tracking-wider">
-                Kontak & Identitas
-            </h2>
-            <p><span class="font-semibold text-gray-900 w-20 inline-block">ID:</span> {{ users.id }}</p>
-            <p><span class="font-semibold text-gray-900 w-20 inline-block">Email:</span> {{ users.email }}</p>
-            <p><span class="font-semibold text-gray-900 w-20 inline-block">Phone:</span> {{ users.phone }}</p>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-indigo-100 pb-5">
+            
+            <div class="mb-4 sm:mb-0">
+                <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
+                    {{ user.name.firstname }} {{ user.name.lastname }}
+                </h1>
+                <p class="text-md text-indigo-600 mt-1 font-medium">
+                    @{{ user.username }} <span class="text-gray-500">{{ user.email }}</span>
+                </p>
+            </div>
+
+            <button 
+                (click)="isEditing = !isEditing"
+                [ngClass]="{'bg-gray-500 hover:bg-gray-600': isEditing, 'bg-indigo-600 hover:bg-indigo-700': !isEditing}"
+                class="inline-flex items-center justify-center rounded-full h-10 px-6 text-sm font-semibold text-white transition duration-300 ease-in-out shadow-lg transform hover:scale-105"
+            >
+                <svg *ngIf="!isEditing" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                <svg *ngIf="isEditing" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                {{ isEditing ? 'Batal Edit' : 'Edit Data' }}
+            </button>
         </div>
 
-        <div class="address-info space-y-3 p-4 bg-white rounded-xl shadow-inner border border-gray-200">
-            <h2 class="text-sm font-bold text-indigo-700 uppercase mb-2 tracking-wider">
-                Alamat Tempat Tinggal
-            </h2>
-            <p>
-                <span class="font-semibold text-gray-900 w-20 inline-block">Jalan:</span> {{ users.address.street }}, No. {{ users.address.number }}
-            </p>
-            <p>
-                <span class="font-semibold text-gray-900 w-20 inline-block">Kota:</span> {{ users.address.city }}, {{ users.address.zipcode }}
-            </p>
+        <form *ngIf="isEditing" [formGroup]="userForm" (ngSubmit)="updateUser(user.id)" class="p-6 bg-yellow-50 border border-yellow-200 rounded-xl mb-8 space-y-4">
+            <h3 class="text-lg font-bold text-yellow-800 mb-4">Formulir Pembaruan Data</h3>
 
-            <div class="mt-4 pt-2 border-t border-gray-100">
-                <span class="bg-gray-100 text-gray-600 text-xs font-semibold px-2.5 py-1 rounded-full">
-                    Lat: {{ users.address.geolocation.lat }}, Long:
-                    {{ users.address.geolocation.long }}
-                </span>
+            <div class="space-y-1">
+                <label for="username" class="text-sm font-medium text-gray-700 block">Username</label>
+                <input 
+                    id="username" 
+                    type="text"
+                    formControlName="username" 
+                    required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                >
+                <div *ngIf="userForm.get('username')?.invalid && userForm.get('username')?.touched" class="text-red-500 text-xs mt-1">
+                    Username wajib diisi.
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label for="email" class="text-sm font-medium text-gray-700 block">Email</label>
+                <input 
+                    id="email" 
+                    type="email" 
+                    formControlName="email" 
+                    required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                >
+                <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="text-red-500 text-xs mt-1">
+                    Email wajib diisi dan format harus benar.
+                </div>
+            </div>
+            
+            <button 
+                type="submit" 
+                [disabled]="userForm.invalid"
+                class="w-full mt-4 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 transition duration-150"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M7.707 10.293a1 1 0 10-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L10 12.586 7.707 10.293z" />
+                    <path fill-rule="evenodd" d="M9 3a1 1 0 012 0v1h1a2 2 0 012 2v1h1a2 2 0 012 2v7a2 2 0 01-2 2h-7a2 2 0 01-2-2v-1H5a2 2 0 01-2-2V9a2 2 0 012-2h1V6a1 1 0 011-1V4a1 1 0 011-1zM7 8a1 1 0 011 1v2a1 1 0 11-2 0V9a1 1 0 011-1zm4-1a1 1 0 100-2h2a1 1 0 100-2h-2a1 1 0 00-1 1v2zm-2 2a1 1 0 11-2 0V9a1 1 0 011-1h2a1 1 0 11-2 0v2z" clip-rule="evenodd" />
+                </svg>
+                Simpan Perubahan
+            </button>
+        </form>
+
+        <div *ngIf="!isEditing" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-base text-gray-700">
+            
+            <div class="space-y-3 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                <h2 class="text-sm font-bold text-indigo-700 uppercase mb-2 tracking-wider">
+                    Kontak & Identitas
+                </h2>
+                <p><span class="font-semibold text-gray-900 w-20 inline-block">ID:</span> {{ user.id }}</p>
+                <p><span class="font-semibold text-gray-900 w-20 inline-block">Email:</span> {{ user.email }}</p>
+                <p><span class="font-semibold text-gray-900 w-20 inline-block">Phone:</span> {{ user.phone }}</p>
+            </div>
+
+            <div class="address-info space-y-3 p-4 bg-white rounded-xl shadow-inner border border-gray-200">
+                <h2 class="text-sm font-bold text-indigo-700 uppercase mb-2 tracking-wider">
+                    Alamat Tempat Tinggal
+                </h2>
+                <p>
+                    <span class="font-semibold text-gray-900 w-20 inline-block">Jalan:</span> {{ user.address.street }}, No. {{ user.address.number }}
+                </p>
+                <p>
+                    <span class="font-semibold text-gray-900 w-20 inline-block">Kota:</span> {{ user.address.city }}, {{ user.address.zipcode }}
+                </p>
+
+                <div class="mt-4 pt-2 border-t border-gray-100">
+                    <span class="bg-gray-100 text-gray-600 text-xs font-semibold px-2.5 py-1 rounded-full">
+                        Lat: {{ user.address.geolocation.lat }}, Long:
+                        {{ user.address.geolocation.long }}
+                    </span>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div *ngIf="!users" class="text-center p-12 bg-white rounded-xl shadow-lg mt-10 border border-gray-200">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-indigo-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-    <p class="text-xl text-gray-600 font-medium mt-3">Memuat data pengguna...</p>
-</div>
+    <div *ngIf="!user" class="text-center p-12 bg-white rounded-xl shadow-lg mt-10 border border-gray-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-indigo-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p class="text-xl text-gray-600 font-medium mt-3">Memuat data pengguna...</p>
+    </div>
 
 
 </div>
